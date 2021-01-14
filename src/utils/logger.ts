@@ -1,26 +1,26 @@
 type messageType = 'debug' | 'info' | 'error' | 'warn';
 
 export interface ILogger {
-  debug: (message: string, ...data: any[]) => void;
-  info: (message: string, ...data: any[]) => void;
-  error: (message: string, ...data: any[]) => void;
-  warning: (message: string, ...data: any[]) => void;
+  debug: (message: string, ...data: unknown[]) => void;
+  info: (message: string, ...data: unknown[]) => void;
+  error: (message: string, ...data: unknown[]) => void;
+  warning: (message: string, ...data: unknown[]) => void;
 }
 
 export default class Logger implements ILogger {
-  public debug(message: string, ...data: any[]): void {
+  public debug(message: string, ...data: unknown[]): void {
     this.emitLogMessage('debug', message, data);
   }
-  public info(message: string, ...data: any[]): void {
+  public info(message: string, ...data: unknown[]): void {
     this.emitLogMessage('info', message, data);
   }
-  public error(message: string, ...data: any[]): void {
+  public error(message: string, ...data: unknown[]): void {
     this.emitLogMessage('error', message, data);
   }
-  public warning(message: string, ...data: any[]): void {
+  public warning(message: string, ...data: unknown[]): void {
     this.emitLogMessage('warn', message, data);
   }
-  private emitLogMessage(type: messageType, message: string, data: any[]) {
+  private emitLogMessage(type: messageType, message: string, data: unknown[]) {
     if (data.length === 0) {
       console[type](message);
     } else {
