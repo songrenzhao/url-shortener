@@ -1,3 +1,4 @@
+import './db';
 import createApp from './app';
 import config from './config';
 import Logger from './utils/logger';
