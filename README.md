@@ -1,7 +1,9 @@
-# Url Shortener
+# URL Shortener
 URL shortening is used to create shorter aliases for long URLs. Inspired by TinyURL, this project aims to clone the behaviors of TinyURL.
 
 ---
+## Author
+- [Songren Zhao](https://www.linkedin.com/in/songrenzhao/) 
 ## Features
 - [x] Encoding actual URL with Hashing
 - [x] Redirect to actual URL with tiny URL
