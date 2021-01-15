@@ -6,6 +6,7 @@ export type tinyUrl = {
   originalURL?: string,
   creationDate?: Date,
   expirationDate?: Date
+  baseRoute?: string
 } | null;
 
 export async function createTinyUrl(hashedValues: string, originalURL: string): Promise<boolean> {

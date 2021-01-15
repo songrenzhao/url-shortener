@@ -1,15 +1,14 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 interface HttpException {
   status?: number;
-  message?: string;
+  stack?: string;
 }
 
-export default function errorHandler(error: HttpException, _: Request, res: Response): void {
-  res.status(error?.status ?? 500).send({
-    error: {
-      status: error?.status ?? 500,
-      message: error?.message ?? 'Internal Server Error'
-    }
-  });
+export default function errorHandler(err: HttpException, _req: Request, res: Response, next: NextFunction): void {
+  const error = {
+    status: err?.status ?? 500,
+    message: err?.stack ?? 'Internal Server Error'
+  }
+  res.status(error.status).send({ message: error.message });
 }

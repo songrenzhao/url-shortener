@@ -1,13 +1,13 @@
 type messageType = 'debug' | 'info' | 'error' | 'warn';
 
-export interface ILogger {
+interface ILogger {
   debug: (message: string, ...data: unknown[]) => void;
   info: (message: string, ...data: unknown[]) => void;
   error: (message: string, ...data: unknown[]) => void;
   warning: (message: string, ...data: unknown[]) => void;
 }
 
-export default class Logger implements ILogger {
+class Logger implements ILogger {
   public debug(message: string, ...data: unknown[]): void {
     this.emitLogMessage('debug', message, data);
   }
@@ -28,3 +28,6 @@ export default class Logger implements ILogger {
     }
   }
 }
+
+const Log: ILogger = new Logger();
+export default Log;
