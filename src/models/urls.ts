@@ -26,6 +26,6 @@ const urlSchema: Schema = new Schema({
   }
 });
 
-const tinyUrl: Model<IUrl> = model<IUrl>('urls', urlSchema);
+const TinyUrl: Model<IUrl> = model<IUrl>('urls', urlSchema);
 
-export default tinyUrl;
+export default TinyUrl;
