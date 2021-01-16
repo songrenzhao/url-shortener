@@ -9,6 +9,11 @@ export type tinyUrl = {
   baseRoute?: string
 } | null;
 
+/**
+ * Create a mapping in database hashedValues <=> originalUrl
+ * @param hashedValues 
+ * @param originalURL 
+ */
 export async function createTinyUrl(hashedValues: string, originalURL: string): Promise<boolean> {
   const tinyurl: IUrl = new TinyUrl({
     hashedValues,
@@ -20,12 +25,20 @@ export async function createTinyUrl(hashedValues: string, originalURL: string): 
   return !!response;
 }
 
+/**
+ * Return the mapping entry from database
+ * @param hashedValues 
+ */
 export async function findTinyUrl(hashedValues: string): Promise<tinyUrl> {
   const tinyUrl: Array<IUrl> = await TinyUrl.find({ hashedValues });
   const response = tinyUrl.length !== 0 ? tinyUrl[0] : null;
   return response;
 }
 
+/**
+ * Remove all mappings found for a given hashedValue
+ * @param hashedValues 
+ */
 export async function removeTinyUrl(hashedValues: string): Promise<boolean> {
   const { ok: response }: { ok: number } = await TinyUrl.deleteMany({ hashedValues });
   return !!response;
