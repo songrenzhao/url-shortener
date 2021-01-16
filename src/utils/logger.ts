@@ -1,6 +1,6 @@
 type messageType = 'debug' | 'info' | 'error' | 'warn';
 
-interface ILogger {
+export interface ILogger {
   debug: (message: string, ...data: unknown[]) => void;
   info: (message: string, ...data: unknown[]) => void;
   error: (message: string, ...data: unknown[]) => void;
