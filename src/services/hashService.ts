@@ -1,5 +1,7 @@
 import { nanoid, customAlphabet } from 'nanoid';
 import { createTinyUrl, findTinyUrl } from './urlService';
+import { getCachedUrl, cacheUrl } from '../services/cacheService';
+import Logger from '../utils/logger';
 import type { tinyUrl } from './urlService';
 
 /**
@@ -13,7 +15,7 @@ async function getUniqNanoId(url: string, baseRoute: string, customText?: string
   let hashedValue;
   do {
     if (customText) {
-      const customizedNanoid = customAlphabet(customText, size ?? 10);
+      const customizedNanoid = customAlphabet(customText, size ?? 10); 
       hashedValue = await customizedNanoid();
     } else {
       hashedValue = await nanoid();
@@ -28,8 +30,16 @@ async function getUniqNanoId(url: string, baseRoute: string, customText?: string
  * Return original url if found, return {} otherwise
  * @param hashedValue 
  */
-export async function getOriginalUrl(hashedValue: string): Promise<tinyUrl | null> {
-  const response: tinyUrl = await findTinyUrl(hashedValue);
+export async function getOriginalUrl(hashedValue: string): Promise<tinyUrl> {
+  const response: tinyUrl = {};
+  const getRawCachedUrl: string | undefined = await getCachedUrl(hashedValue);
+  if (getRawCachedUrl) {
+    const cacheUrl: tinyUrl = JSON.parse(getRawCachedUrl);
+    Object.assign(response, cacheUrl);
+  } else {
+    const info: tinyUrl = await findTinyUrl(hashedValue);
+    Object.assign(response, info);
+  }
   return response ?? {};
 }
 
@@ -44,12 +54,16 @@ export async function getOriginalUrl(hashedValue: string): Promise<tinyUrl | nul
 export async function saveHashedUrl(url: string, baseRoute: string, customText?: string, size?: number): Promise<tinyUrl> {
   const hashedValue: string = await getUniqNanoId(url, baseRoute, customText, size);
   const isUrlCreated: boolean = await createTinyUrl(hashedValue, url);
-  const response: tinyUrl = isUrlCreated ? await findTinyUrl(hashedValue) : null;
+  const tinyUrl: tinyUrl = isUrlCreated ? await findTinyUrl(hashedValue) : {};
+  const isCachedSuccessfully: boolean = await cacheUrl(hashedValue, tinyUrl);
+  if (!isCachedSuccessfully) {
+    Logger.warning(`Redis did not cached key ${hashedValue} at ${`new Date()`}`)
+  }
   return {
-    hashedValues: response?.hashedValues,
-    originalURL: response?.originalURL,
-    creationDate: response?.creationDate,
-    expirationDate: response?.expirationDate,
-    baseRoute: `${baseRoute}/${response?.hashedValues}`
+    hashedValues: tinyUrl?.hashedValues,
+    originalURL: tinyUrl?.originalURL,
+    creationDate: tinyUrl?.creationDate,
+    expirationDate: tinyUrl?.expirationDate,
+    baseRoute: `${baseRoute}/${tinyUrl?.hashedValues}`
   }
 }
