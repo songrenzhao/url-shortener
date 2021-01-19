@@ -57,7 +57,7 @@ export async function saveHashedUrl(url: string, baseRoute: string, customText?:
   const tinyUrl: tinyUrl = isUrlCreated ? await findTinyUrl(hashedValue) : {};
   const isCachedSuccessfully: boolean = await cacheUrl(hashedValue, tinyUrl);
   if (!isCachedSuccessfully) {
-    Logger.warning(`Redis did not cached key ${hashedValue} at ${`new Date()`}`)
+    Logger.warning(`Redis did not cached key ${hashedValue} at ${new Date()}`)
   }
   return {
     hashedValues: tinyUrl?.hashedValues,
