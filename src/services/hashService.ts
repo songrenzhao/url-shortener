@@ -32,9 +32,9 @@ async function getUniqNanoId(url: string, baseRoute: string, customText?: string
  */
 export async function getOriginalUrl(hashedValue: string): Promise<tinyUrl> {
   const response: tinyUrl = {};
-  const getRawCachedUrl: string | undefined = await getCachedUrl(hashedValue);
-  if (getRawCachedUrl) {
-    const cacheUrl: tinyUrl = JSON.parse(getRawCachedUrl);
+  const rawCachedUrl: string | undefined = await getCachedUrl(hashedValue);
+  if (rawCachedUrl) {
+    const cacheUrl: tinyUrl = JSON.parse(rawCachedUrl);
     Object.assign(response, cacheUrl);
   } else {
     const info: tinyUrl = await findTinyUrl(hashedValue);
