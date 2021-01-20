@@ -7,14 +7,16 @@ URL shortening is used to create shorter aliases for long URLs. Inspired by Tiny
 ## Features
 - [x] Encoding actual URL with Hashing
 - [x] Redirect to actual URL with tiny URL
-- [ ] Caching - Redis? Design a LRU if cache is full? 
-- [ ] High Traffic Capability?
+- [x] Cached popular urls and reduce time it takes to redirect
+- [x] High traffic capability, currently L&B with 4 instances
+- [ ] DNS Look up to make sure the site is on
+
 ## Requirements
 For development, you will only need the following tools
 - Node.js
 - Yarn / Npm
 - MongoDB
-
+- Redis
 ## Install
 
     $ git clone https://github.com/songrenzhao/url-shortener
@@ -29,12 +31,19 @@ PORT=...
 MONGODB_USERNAME=...
 MONGODB_PASSWORD=...
 MONGODB_MISC=...
+REDIS_HOST=...
+REDIS_PORT=...
+REDIS_PASSWORD=...
 ```
 Notice MONGODB setting corresponds to this `mongodb+srv://${USERNAME}:${PASSWORD}@${MISC}?retryWrites=true&w=majority`
 
 ## Running the project
-
+    $ yarn build
     $ yarn start
+    
+## Running the project on dev
+
+    $ yarn dev
 
 ## Simple build for production
 
