@@ -1,5 +1,7 @@
 import TinyUrl from '../models/urls';
+import { promises as dns } from 'dns';
 import type { IUrl } from '../models/urls';
+import Logger from '../utils/logger';
 
 export type tinyUrl = {
   hashedValues?: string;
@@ -15,14 +17,20 @@ export type tinyUrl = {
  * @param originalURL 
  */
 export async function createTinyUrl(hashedValues: string, originalURL: string): Promise<boolean> {
-  const tinyurl: IUrl = new TinyUrl({
-    hashedValues,
-    originalURL,
-    creationDate: new Date(),
-    expirationDate: new Date((new Date()).getTime() + (1 * 24 * 60 * 60 * 1000))
-  });
-  const response = await tinyurl.save();
-  return !!response;
+  try {
+    await dns.resolve4(originalURL.split('/')[2])
+    const tinyurl: IUrl = new TinyUrl({
+      hashedValues,
+      originalURL,
+      creationDate: new Date(),
+      expirationDate: new Date((new Date()).getTime() + (1 * 24 * 60 * 60 * 1000))
+    });
+    const response = await tinyurl.save();
+    return !!response;
+  } catch (err) {
+    Logger.error(`Invalid domain for ${originalURL.split('/')[2]}`);
+    throw new Error(`Invalid domain for ${originalURL.split('/')[2]}`);
+  }
 }
 
 /**
