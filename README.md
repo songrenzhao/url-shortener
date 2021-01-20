@@ -9,7 +9,7 @@ URL shortening is used to create shorter aliases for long URLs. Inspired by Tiny
 - [x] Redirect to actual URL with tiny URL
 - [x] Cached popular urls and reduce time it takes to redirect
 - [x] High traffic capability, currently L&B with 4 instances
-- [ ] DNS Look up to make sure the site is on
+- [x] DNS Look up for IPv4
 
 ## Requirements
 For development, you will only need the following tools
