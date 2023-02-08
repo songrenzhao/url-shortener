@@ -5,7 +5,7 @@ URL shortening is used to create shorter aliases for long URLs. Inspired by Tiny
 ## Author
 - [Songren Zhao](https://www.linkedin.com/in/songrenzhao/) 
 ## Features
-- [x] Encoding actual URL with Hashing
+- [x] Encoding and hashing actual URL
 - [x] Redirect to actual URL with tiny URL
 - [x] Cached popular urls and reduce time it takes to redirect
 - [x] High traffic capability, currently L&B with 4 instances
